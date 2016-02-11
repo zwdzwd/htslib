@@ -170,6 +170,7 @@ enum hts_fmt_option {
     // General purpose
     HTS_OPT_COMPRESSION_LEVEL = 100,
     HTS_OPT_NTHREADS,
+    HTS_OPT_BLOCK_SIZE,
 };
 
 // For backwards compatibility

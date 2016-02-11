@@ -138,6 +138,33 @@ static ssize_t refill_buffer(hFILE *fp)
     return n;
 }
 
+/*
+ * Changes the buffer size for an hFILE.  Ideally this is done
+ * immediately after opening.  If performed later, this function may
+ * fail if we are reducing the buffer size and the current offset into
+ * the buffer is beyond the new capacity.
+ *
+ * Returns 0 on success;
+ *        -1 on failure.
+ */
+int hfile_set_blksize(hFILE *fp, size_t bufsiz) {
+    char *buffer;
+    if (!fp) return -1;
+    if (bufsiz == 0) bufsiz = 32768;
+
+    if (bufsiz < fp->offset)
+        return -1;
+
+    if (!(buffer = (char *) realloc(fp->buffer, bufsiz))) return -1;
+
+    fp->begin  = buffer + (fp->begin - fp->buffer);
+    fp->end    = buffer + (fp->end   - fp->buffer);
+    fp->buffer = buffer;
+    fp->limit  = &fp->buffer[bufsiz];
+
+    return 0;
+}
+
 /* Called only from hgetc(), when our buffer is empty.  */
 int hgetc2(hFILE *fp)
 {

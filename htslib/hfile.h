@@ -128,6 +128,21 @@ static inline int hgetc(hFILE *fp)
 }
 
 /*!
+  @abstract  Resizes the buffer within an hFILE.
+
+  @notes  Changes the buffer size for an hFILE.  Ideally this is done
+  immediately after opening.  If performed later, this function may
+  fail if we are reducing the buffer size and the current offset into
+  the buffer is beyond the new capacity.
+
+  @param fp        The file stream
+  @param bufsiz    The size of the new bufsiz
+
+  @return Returns 0 on success, -1 on failure.
+ */
+int hfile_set_blksize(hFILE *fp, size_t capacity);
+
+/*!
   @abstract  Peek at characters to be read without removing them from buffers
   @param fp      The file stream
   @param buffer  The buffer to which the peeked bytes will be written

@@ -28,7 +28,13 @@ RANLIB = ranlib
 
 CPPFLAGS =
 # TODO: probably update cram code to make it compile cleanly with -Wc++-compat
-CFLAGS   = -g -Wall -O2
+CFLAGS   = -g -Wall
+
+# DEBUG option
+ifneq (1, $(CF_NO_OPTIMIZE))
+	CFLAGS += -O2
+endif
+
 EXTRA_CFLAGS_PIC = -fpic
 LDFLAGS  =
 LIBS     =

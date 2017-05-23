@@ -31,8 +31,11 @@ CPPFLAGS =
 CFLAGS   = -g -Wall
 
 # DEBUG option
-ifneq (1, $(CF_NO_OPTIMIZE))
+# $(info $$CF_OPTIMIZE is [$(CF_OPTIMIZE)])
+# $(info $$(CFLAGS) is [$(CFLAGS)])
+ifeq (1, $(CF_OPTIMIZE))
 	CFLAGS += -O2
+	CFLAGS := $(filter-out -g, $(CFLAGS))
 endif
 
 EXTRA_CFLAGS_PIC = -fpic
